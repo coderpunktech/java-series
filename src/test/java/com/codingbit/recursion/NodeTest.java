@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import reactor.core.publisher.Flux;
@@ -49,6 +50,7 @@ class NodeTest {
     }
 
     @Test
+    @DisplayName("Reactive breadth first recursion")
     void bfsRecursion() {
         StepVerifier.create(Flux.fromIterable(rootNode.getChildren())
                 .expand(child -> Flux.fromIterable(child.getChildren())))
@@ -57,6 +59,7 @@ class NodeTest {
     }
 
     @Test
+    @DisplayName("Reactive depth first recursion")
     void dfsRecursion() {
         StepVerifier.create(Flux.fromIterable(rootNode.getChildren())
                 .expandDeep(child -> Flux.fromIterable(child.getChildren())))
@@ -65,6 +68,7 @@ class NodeTest {
     }
 
     @Test
+    @DisplayName("Reactive recursion of a graph")
     void rootNodeRecursion() {
         List<Node> graph = new ArrayList<>();
         graph.add(rootNode);
@@ -75,6 +79,7 @@ class NodeTest {
     }
 
     @Test
+    @DisplayName("Reactive breadth first search")
     void bfsFindFirstMarked() {
         Flux<Node> findMarked = Flux.fromIterable(rootNode.getChildren())
                 .expand(child -> Flux.fromIterable(child.getChildren()))
@@ -84,6 +89,7 @@ class NodeTest {
                 .expectNext(node1, node2)
                 .verifyComplete();
 
+        // check that the found node is equal to the expected node2
         Node found = findMarked.last().block();
 
         assertNotNull(found);
@@ -91,6 +97,7 @@ class NodeTest {
     }
 
     @Test
+    @DisplayName("Reactive depth first search")
     void dfsFindFirstMarked() {
 
         Flux<Node> findMarked = Flux.fromIterable(rootNode.getChildren())
@@ -101,6 +108,7 @@ class NodeTest {
                 .expectNext(node1, node3, node4)
                 .verifyComplete();
 
+        // check that the found node is equal to the expected node4
         Node found = findMarked.last().block();
 
         assertNotNull(found);
