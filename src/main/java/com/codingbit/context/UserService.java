@@ -21,6 +21,7 @@ public class UserService {
     public Mono<String> getUserEmail() {
         // access the context
         return Mono.subscriberContext()
+                .log()
                 .map(context -> {
                     // return the user id
                     User user = context.get(ContextType.USER.name());
@@ -44,7 +45,7 @@ public class UserService {
                 .doOnEach(stringSignal -> {
                     if (stringSignal.isOnNext()) {
                         final Context context = stringSignal.getContext();
-                        log.info("getting options for user context {}", context.get(ContextType.USER.name()).toString());
+                        log.info("getting email for user context: {}", context.get(ContextType.USER.name()).toString());
                     }
                 });
     }
