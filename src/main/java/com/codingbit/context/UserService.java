@@ -21,7 +21,6 @@ public class UserService {
     public Mono<String> getUserEmail() {
         // access the context
         return Mono.subscriberContext()
-                .log()
                 .map(context -> {
                     // return the user id
                     User user = context.get(ContextType.USER.name());
