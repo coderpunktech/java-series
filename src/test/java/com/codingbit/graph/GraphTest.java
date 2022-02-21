@@ -2,6 +2,7 @@ package com.codingbit.graph;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Comparator;
 import java.util.List;
@@ -47,6 +48,7 @@ class GraphTest {
         List<Path> paths = graph.allPaths("A", "C");
         assertEquals(3, paths.size());
 
+        // sort by shortest first
         List<Path> sorted = paths.stream()
                 .sorted(Comparator.comparing(Path::getLength))
                 .collect(Collectors.toList());
@@ -65,6 +67,13 @@ class GraphTest {
         assertNotNull(three);
         assertEquals(19, three.getLength());
         assertEquals("A -> B -> E -> D -> C", three.getReadableString());
+
+        Path shortestPath = graph.shortestPath("A", "C");
+        assertEquals(one, shortestPath);
+
+        assertEquals(paths, graph.getPaths());
+        graph.clearState();
+        assertTrue(graph.getPaths().isEmpty());
     }
 
     @Test
@@ -73,6 +82,7 @@ class GraphTest {
         List<Path> paths = graph.allPaths("A", "F");
         assertEquals(5, paths.size());
 
+        // sort by shortest first
         List<Path> sorted = paths.stream()
                 .sorted(Comparator.comparing(Path::getLength))
                 .collect(Collectors.toList());
@@ -102,5 +112,11 @@ class GraphTest {
         assertEquals(23, five.getLength());
         assertEquals("A -> B -> E -> D -> C -> F", five.getReadableString());
 
+        Path shortestPath = graph.shortestPath("A", "F");
+        assertEquals(one, shortestPath);
+
+        assertEquals(paths, graph.getPaths());
+        graph.clearState();
+        assertTrue(graph.getPaths().isEmpty());
     }
 }
