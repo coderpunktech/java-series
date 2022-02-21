@@ -20,7 +20,10 @@ class PathTest {
     void setUp() {
         MockitoAnnotations.initMocks(this);
         when(edgeOne.getDistance()).thenReturn(3);
+        when(edgeOne.getFrom()).thenReturn(new Node("A"));
+        when(edgeOne.getTo()).thenReturn(new Node("B"));
         when(edgeTwo.getDistance()).thenReturn(2);
+        when(edgeTwo.getTo()).thenReturn(new Node("C"));
     }
 
     @Test
@@ -31,11 +34,14 @@ class PathTest {
 
         assertEquals(1, path.getEdges().size());
         assertEquals(3, path.getLength());
+        assertEquals("A -> B", path.getReadableString());
 
         path.add(edgeTwo);
 
         assertEquals(2, path.getEdges().size());
         assertEquals(5, path.getLength());
+        assertEquals("A -> B -> C", path.getReadableString());
+
     }
 
 }

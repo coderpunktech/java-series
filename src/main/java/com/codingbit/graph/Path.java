@@ -18,6 +18,10 @@ public class Path {
         this.edges = new ArrayList<>();
     }
 
+    public Path(List<Edge> edges) {
+        this.edges = edges;
+    }
+
     /**
      * Add the next Edge to the path
      *
@@ -37,6 +41,23 @@ public class Path {
                 .map(Edge::getDistance)
                 .reduce(Integer::sum)
                 .orElse(null);
+    }
+
+    public String getReadableString() {
+        if (edges.isEmpty()) {
+            return "";
+        }
+
+        Edge source = edges.get(0);
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(source.getFrom().getName());
+
+        for (Edge next : edges) {
+            sb.append(String.format(" -> %s", next.getTo().getName()));
+        }
+
+        return sb.toString();
     }
 
     public List<Edge> getEdges() {
